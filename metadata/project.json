@@ -1,0 +1,32 @@
+{
+  "index": 81,
+  "phase": 1,
+  "batch": 9,
+  "name": "solbridge",
+  "planned_name": "solbridge",
+  "language": "Solidity",
+  "category": "Blockchain tooling",
+  "goal": "Model bridge accounting, mint-burn limits, and replay protection.",
+  "repository_url": "https://github.com/ZachL111/solbridge",
+  "verification_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1",
+  "model": {
+    "inputs": [
+      "demand",
+      "capacity",
+      "latency",
+      "risk",
+      "weight"
+    ],
+    "threshold": 180,
+    "risk_penalty": 7,
+    "latency_penalty": 4,
+    "weight_bonus": 4,
+    "decision_rule": "accept when score is greater than or equal to threshold, otherwise review"
+  },
+  "quality_gates": [
+    "readme constraint scan",
+    "fixture presence check",
+    "metadata JSON parse",
+    "language verifier"
+  ]
+}
