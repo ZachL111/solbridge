@@ -1,0 +1,17 @@
+{
+  "repo": "solbridge",
+  "thresholds": {
+    "signal": 4,
+    "slack": 1,
+    "confidence": 1,
+    "drag": 2,
+    "ship": 181,
+    "watch": 96
+  },
+  "terms": [
+    "event finality",
+    "nonce pressure",
+    "settlement risk",
+    "proof depth"
+  ]
+}

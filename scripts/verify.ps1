@@ -61,3 +61,9 @@ foreach ($pathPattern in $knownPaths) {
 forge test
 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-solbridge-detail.ps1
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-solbridge-properties.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-solbridge-golden.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
