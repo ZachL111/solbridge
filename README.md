@@ -1,69 +1,40 @@
 # solbridge
 
-`solbridge` explores blockchain tooling in Solidity. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`solbridge` keeps a focused Solidity implementation around blockchain tooling. The project goal is to model bridge accounting, mint-burn limits, and replay protection.
 
-## Solbridge Notes
+## Purpose
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how event finality and settlement risk should influence a review result.
 
-## Why This Exists
+## Solbridge Review Notes
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+For a quick review, compare `event finality` with `proof depth` before reading the middle cases.
 
-## Example Scenarios
+## What Is Covered
 
-`degraded` is the first example I would inspect because it lands on the `review` path with a score of -93. The broader file also keeps `degraded` at -93 and `surge` at 148, which gives the model a useful low-to-high spread.
+- `fixtures/domain_review.csv` adds cases for event finality and nonce pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/solbridge-walkthrough.md` walks through the case spread.
+- The Solidity code includes a review path for `event finality` and `proof depth`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
 ## Implementation Notes
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps contract state, event replay, and invariant checks in one explicit decision path. The threshold is 180, with risk penalty 7, latency penalty 4, and weight bonus 4. The Solidity project uses Foundry tests and pure contract functions so invariants are cheap to exercise.
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Feature Notes
+The Solidity checks add a pure review lens and Foundry coverage.
 
-- Models contract state with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep event replay changes visible in code review.
-- Includes extended examples for invariant checks, including `surge` and `degraded`.
-- Documents settlement rules tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-
-## Try It
+## Command
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Audit Path
 
-## Tests
+The check exercises the source code and the review fixture. `stale` is the high score at 247; `recovery` is the low score at 139.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Limits
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Code Tour
-
-- `src`: primary implementation
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `foundry.toml`: Foundry project configuration
-
-## Roadmap
-
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Add one more blockchain tooling fixture that focuses on a malformed or borderline input.
-
-## Boundaries
-
-The repository favors determinism over breadth. It does not pull live data, keep secrets, or depend on network access for verification.
-
-## Local Setup
-
-Clone the repository, enter the directory, and run the verifier. No database server, cloud account, or token is required.
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.

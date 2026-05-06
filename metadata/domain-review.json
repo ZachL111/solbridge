@@ -1,0 +1,73 @@
+{
+  "repo": "solbridge",
+  "language": "Solidity",
+  "category": "Blockchain tooling",
+  "goal": "Model bridge accounting, mint-burn limits, and replay protection.",
+  "review_model": {
+    "terms": [
+      "event finality",
+      "nonce pressure",
+      "settlement risk",
+      "proof depth"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "event finality",
+      "signal": 66,
+      "slack": 38,
+      "drag": 27,
+      "confidence": 89,
+      "score": 178,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "nonce pressure",
+      "signal": 71,
+      "slack": 47,
+      "drag": 22,
+      "confidence": 56,
+      "score": 179,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "settlement risk",
+      "signal": 80,
+      "slack": 23,
+      "drag": 10,
+      "confidence": 72,
+      "score": 225,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "proof depth",
+      "signal": 58,
+      "slack": 37,
+      "drag": 30,
+      "confidence": 76,
+      "score": 139,
+      "lane": "watch"
+    },
+    {
+      "name": "stale",
+      "focus": "event finality",
+      "signal": 78,
+      "slack": 40,
+      "drag": 13,
+      "confidence": 90,
+      "score": 247,
+      "lane": "ship"
+    }
+  ]
+}
